@@ -13,7 +13,7 @@ function App() {
       EventEmitter.dispatch('rightKey', {});
     } else if(event.keyCode === 37) {
       EventEmitter.dispatch('leftKey', {});
-    }
+    } 
    };
 
    window.addEventListener('keydown', handleEsc);

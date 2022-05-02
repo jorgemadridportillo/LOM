@@ -2,9 +2,11 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
 
-export function TerminalLine({ line }) {
+export function TerminalLine({ line, isCurrentLine }) {
   const { text, choices } =  line;
   const [_choices, setChoices] = useState(choices);
+  const [width, setWidth] = useState("10px");
+  const [input, setInput] = useState('');
 
   useEffect(() => {
       const scrollChoice = (num) => {
@@ -27,28 +29,41 @@ export function TerminalLine({ line }) {
         }
     }
 
-    EventEmitter.subscribe('rightKey', (event) => {
-      scrollChoice(1);
-    });
-
-    EventEmitter.subscribe('leftKey', (event) => {
-      scrollChoice(-1);
-    });
+    if(isCurrentLine) {
+      EventEmitter.subscribe('rightKey', (event) => {
+        scrollChoice(1);
+      });
+  
+      EventEmitter.subscribe('leftKey', (event) => {
+        scrollChoice(-1);
+      });
+    }
 
     EventEmitter.subscribe('enterKey', (event) => {
       EventEmitter.unsubscribe('rightKey');
       EventEmitter.unsubscribe('leftKey');
+
+      
     });
   }, []);
+
+  const handleKeyPress = (e) => {
+    const l = e.target.value.length + 2;
+    setWidth(l*7 + "px");
+  }
   
-  if(!choices) {
+  if(!_choices && text !== '') {
     return (
       <li>{'>'} {text} <span className="blink">_</span></li>
+    )
+  } else if(!_choices && text === '') {
+    return (
+      <li>{'>'} <input value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyPress(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
     )
   } else {
     return (
       <li>{'>'} 
-      {choices.map((choice, index) => {
+      {_choices.map((choice, index) => {
         return <span key={index} className={`choice ${choice.active ? "active": ""}`} >{choice.text}</span>
       })} 
         <span className="blink">_</span>

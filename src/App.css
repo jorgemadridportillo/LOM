@@ -13,6 +13,9 @@ ul {
   color: white;
 }
 
+input {border:0;outline:0;}
+input:focus {outline:none!important;}
+
 .blink {
   font-size: 20px;
   font-weight: bold;
