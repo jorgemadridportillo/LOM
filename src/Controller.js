@@ -1,24 +1,18 @@
 import {Model} from './Model';
 
-var Controller = {
+const Controller = {
     currentQuestion: 0,
-    getProgress: function() {
-        return 0;
-    },
     model: Model,
-    showNextQuestion: function() {
-    },
-    getLines: () => Model.lines,
-    addLine: function(line) {
-        Model.lines = [...Model.lines, line]
-    },
-    promptUser: function() {
-        var line = { text: "Press ENTER to continue" };
-        Controller.addLine(line);
-    },
-    setReady: () => Controller.isReady = true,
     isReady: false,
-    nextLine: () => Controller.addLine({ text: "" })
+    setReady: () => Controller.isReady = true,
+    getProgress: function() {
+        return Controller.currentQuestion / Model.questions.length * 100;
+    },
+    getNextQuestion: () => {
+        const question = Model.questions[Controller.currentQuestion];
+        Controller.currentQuestion++;
+        return question;
+    }
 }
 
 export {Controller};

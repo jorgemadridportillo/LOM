@@ -1,5 +1,4 @@
-var Model = {
-    lines: [{ text: "Welcome human, the test has begun, let the machine gods decide your destiny, good luck..." }],
+const Model = {
     questions: [
         { text: "When was the Great Pyramid of Giza build?", choices: ["10th century BC", "26th century BC", "60th century BC"], answer: 1, bonus: "Thats right, it is the oldest of the Seven Wonders of the Ancient World, and the only one to remain largely intact" },
         { text: "What was the name of the explorer who first achieved a complete circumnavigation of the world?", answer: "Magellan" , bonus: "Excellent!, actually Magellan died in the Philippines after being struck by a bamboo spear"},
@@ -17,9 +16,6 @@ var Model = {
         else { return question.answer; }
     },
     userAnswers: [],
-    addLine: function(line){
-        Model.lines.push(line)
-    },
     addAnswer: function(answer) {
         Model.userAnswers.push(answer);
     }   

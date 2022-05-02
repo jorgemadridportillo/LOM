@@ -1,25 +1,20 @@
 import './App.css';
 import {Terminal} from './components/Terminal';
-import {useState, useEffect} from 'react' 
-import {Controller} from './Controller'
+import {useEffect} from 'react'; 
+import {EventEmitter} from './EventEmitter.js';
 
 function App() {
 
-  const [lines, setLines] = useState(Controller.getLines());
-
   useEffect(() => {
    const handleEsc = (event) => {
-    if (event.keyCode === 13 && Controller.isReady) {
-      Controller.nextLine();
-      setLines(Controller.getLines());
+    if (event.keyCode === 13) {
+      EventEmitter.dispatch('enterKey', {});
+    } else if(event.keyCode === 39) {
+      EventEmitter.dispatch('rightKey', {});
+    } else if(event.keyCode === 37) {
+      EventEmitter.dispatch('leftKey', {});
     }
    };
-
-   setTimeout(() => {
-     Controller.promptUser();
-     setLines(Controller.getLines());
-     Controller.setReady();
-   }, 2000);
 
    window.addEventListener('keydown', handleEsc);
    return () => {
@@ -29,7 +24,7 @@ function App() {
 
   return (
     <div className="App">
-      <Terminal lines={lines}/>
+      <Terminal/>
     </div>
   );
 }

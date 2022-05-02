@@ -33,6 +33,15 @@ ul {
   height: 30px
 }
 
+.lines li .choice {
+  padding-right: 15px;
+}
+
+.lines li .choice.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 @keyframes blink {
   0% {
       opacity: 0;
