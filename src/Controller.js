@@ -27,6 +27,15 @@ const Controller = {
         const answers = Model.getAnswers();
         const correctAnswers = answers.filter((answer) => {return answer.correct === true});
         return correctAnswers.length;
+    },
+    promptTimeout: 2000,
+    getPromptTimeout: () => {
+        return Controller.promptTimeout;
+    },
+    reset: () => {
+        Controller.currentQuestion = -1;
+        Controller.isReady = false;
+        Model.userAnswers = [];
     }
 }
 

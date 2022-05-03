@@ -15,6 +15,7 @@ export function Terminal() {
     const nextQuestion = Controller.getNextQuestion();
     const currentQuestionIndex = Controller.getCurrentQuestionIndex();
 
+    // Show answers
     var answerLine={}
     if(lastQuestionIndex >= 0) {
       const lastQuestionLine = lines.find((line) => {  return line.questionIndex === lastQuestionIndex;});
@@ -46,8 +47,8 @@ export function Terminal() {
       Controller.addAnswer(answerToSave);
     }
 
+    // Last question done, show results
     if(nextQuestion === undefined) { 
-      // Last question done, show results
       const numberOfCorrectAnswer = Controller.getNumberOfCorrectAnswers();
       var lastLine = {type: "text", text: ""};
       if(numberOfCorrectAnswer > 5) {
@@ -61,6 +62,7 @@ export function Terminal() {
       return; 
     }
 
+    // New questions
     var nextLine = { text: nextQuestion.text, type: "text"};
     var inputLine = {text: "", questionIndex: currentQuestionIndex, type: nextQuestion.type, answer: nextQuestion.answer};
     if(nextQuestion.type === 'choices') {
@@ -75,6 +77,7 @@ export function Terminal() {
 
   });
 
+  // Prompt intro
   useEffect(() => {
     setTimeout(() => {
       var userLine = { text: "Press ENTER to continue", type: "prompt" };
@@ -83,7 +86,7 @@ export function Terminal() {
         return [...prevLines, userLine];
       });
       Controller.setReady();
-    }, 2000);
+    }, Controller.getPromptTimeout());
   }, []);
 
   return (
