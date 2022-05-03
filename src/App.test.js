@@ -104,6 +104,28 @@ test('test number input question', async () => {
   expect(screen.getByText(/12345/)).toBeInTheDocument();
 });
 
+test('test the answer is correct', async () => {
+  render(<App />);
+  await waitFor(() => {
+    screen.getByText(/ENTER/);
+  }, {timeout: 50});
+
+  userEvent.keyboard('{Enter}');
+  userEvent.keyboard('{arrowright}');
+  userEvent.keyboard('{Enter}'); // Answer first choice question
+  expect(screen.getByText(/Thats right, it is the oldest/)).toBeInTheDocument();
+});
+
+test('test answer is incorrect', async () => {
+  render(<App />);
+  await waitFor(() => {
+    screen.getByText(/ENTER/);
+  }, {timeout: 50});
+
+  userEvent.keyboard('{Enter}');
+  userEvent.keyboard('{Enter}'); // Answer first choice question
+  expect(screen.getByText(/Incorrect!, the correct answer was: 26th century BC/)).toBeInTheDocument();
+});
 
 test('test the questionaire can be completed wrongly', async () => {
   render(<App />);
@@ -156,3 +178,5 @@ test('test the questionaire can be completed correctly', async () => {
   expect(screen.getByText(/humanity might be saved for this time/)).toBeInTheDocument();
   expect(screen.getByText(/You got 10 questions correct/)).toBeInTheDocument();
 });
+
+
