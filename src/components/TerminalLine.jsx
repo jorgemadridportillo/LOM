@@ -57,14 +57,12 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
             EventEmitter.unsubscribe('rightKey');
             EventEmitter.unsubscribe('leftKey');
             EventEmitter.unsubscribe('enterKey');
-            EventEmitter.dispatch('questionAnswered');
             onQuestionAnswered();
           }
         }else {
           EventEmitter.unsubscribe('rightKey');
           EventEmitter.unsubscribe('leftKey');
           EventEmitter.unsubscribe('enterKey');
-          EventEmitter.dispatch('questionAnswered');
           onQuestionAnswered();
         }
         
@@ -73,7 +71,6 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
       EventEmitter.subscribe('enterKey', (event) => {
         EventEmitter.unsubscribe('enterKey');
         onQuestionAnswered();
-        EventEmitter.dispatch('questionAnswered');
       });
     }
 
