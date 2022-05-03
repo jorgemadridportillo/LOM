@@ -52,12 +52,17 @@ export function TerminalLine({ line, isCurrentLine, type }) {
         EventEmitter.unsubscribe('enterKey');
 
         if(type === 'input') {
-          setText(answerInput.current.value);
-          line.text = answerInput.current.value;
-          line.type = "text";
+          const answerText = answerInput.current.value;
+          if(answerText !== "") {
+            line.text = answerText;
+            line.type = "text";
+            setText(answerText);
+            EventEmitter.dispatch('questionAnswered');
+          }
+        }else {
+          EventEmitter.dispatch('questionAnswered');
         }
         
-        EventEmitter.dispatch('questionAnswered');
       });
     } else if (type === 'prompt') {
       EventEmitter.subscribe('enterKey', (event) => {

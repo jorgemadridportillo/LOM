@@ -70,6 +70,7 @@ test('test input question', async () => {
   }, {timeout: 50});
 
   userEvent.keyboard('{Enter}');
+  userEvent.keyboard('First'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer first choice question
   const lineItems = document.querySelectorAll('.lines li');
   expect(lineItems.length).toEqual(7);
@@ -80,6 +81,20 @@ test('test input question', async () => {
   expect(screen.getByText(/Test/)).toBeInTheDocument();
 });
 
+test('test input question cannot be empty', async () => {
+  render(<App />);
+  await waitFor(() => {
+    screen.getByText(/ENTER/);
+  }, {timeout: 50});
+
+  userEvent.keyboard('{Enter}');
+  userEvent.keyboard('First'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer first choice question
+  userEvent.keyboard('{Enter}'); // Answer second question
+  const lineItems2 = document.querySelectorAll('.lines li');
+  expect(lineItems2.length).toEqual(7);
+});
+
 
 test('test number input question', async () => {
   render(<App />);
@@ -88,6 +103,7 @@ test('test number input question', async () => {
   }, {timeout: 50});
 
   userEvent.keyboard('{Enter}');
+  userEvent.keyboard('First'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer first choice question
   userEvent.keyboard('Test'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer second question
@@ -135,14 +151,21 @@ test('test the questionaire can be completed wrongly', async () => {
 
   userEvent.keyboard('{Enter}');
   userEvent.keyboard('{Enter}'); // Answer first choice question
+  userEvent.keyboard('a'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer second question
+  userEvent.keyboard('b'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer third question
+  userEvent.keyboard('1'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer fourth question
   userEvent.keyboard('{Enter}'); // Answer fifth question
+  userEvent.keyboard('2'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer sixth question
+  userEvent.keyboard('d'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer seventh question
+  userEvent.keyboard('3'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer eighth question
   userEvent.keyboard('{Enter}'); // Answer ninth question
+  userEvent.keyboard('7'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer tenth question
   expect(screen.getByText(/your weak human intelligence/)).toBeInTheDocument();
   expect(screen.getByText(/You got 1 questions correct/)).toBeInTheDocument();
