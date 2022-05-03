@@ -95,6 +95,23 @@ test('test input question cannot be empty', async () => {
   expect(lineItems2.length).toEqual(7);
 });
 
+test('test input question empty and then with a value', async () => {
+  render(<App />);
+  await waitFor(() => {
+    screen.getByText(/ENTER/);
+  }, {timeout: 50});
+
+  userEvent.keyboard('{Enter}');
+  userEvent.keyboard('First'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer first choice question
+  userEvent.keyboard('{Enter}'); // Answer second question
+  const lineItems = document.querySelectorAll('.lines li');
+  expect(lineItems.length).toEqual(7);
+  userEvent.keyboard('Test'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer second question
+  const lineItems2 = document.querySelectorAll('.lines li');
+  expect(lineItems2.length).toEqual(10);
+});
 
 test('test number input question', async () => {
   render(<App />);

@@ -47,19 +47,22 @@ export function TerminalLine({ line, isCurrentLine, type }) {
         answerInput.current.focus();
       }
       EventEmitter.subscribe('enterKey', (event) => {
-        EventEmitter.unsubscribe('rightKey');
-        EventEmitter.unsubscribe('leftKey');
-        EventEmitter.unsubscribe('enterKey');
-
         if(type === 'input') {
           const answerText = answerInput.current.value;
           if(answerText !== "") {
             line.text = answerText;
             line.type = "text";
             setText(answerText);
+
+            EventEmitter.unsubscribe('rightKey');
+            EventEmitter.unsubscribe('leftKey');
+            EventEmitter.unsubscribe('enterKey');
             EventEmitter.dispatch('questionAnswered');
           }
         }else {
+          EventEmitter.unsubscribe('rightKey');
+          EventEmitter.unsubscribe('leftKey');
+          EventEmitter.unsubscribe('enterKey');
           EventEmitter.dispatch('questionAnswered');
         }
         
