@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
+import { ChoiceLine } from './ChoiceLine.jsx';
 
 export function TerminalLine({ line, isCurrentLine, type }) {
   const { text, choices } =  line;
@@ -83,13 +84,7 @@ export function TerminalLine({ line, isCurrentLine, type }) {
     )
   } else if(type === 'choices') {
     return (
-      <li>{'>'} 
-      {_choices.map((choice, index) => {
-        return <span key={index} className={`choice ${choice.active ? "active": ""}`} >{choice.text}</span>
-      })} 
-        <span className="blink">_</span>
-      </li>
+      <ChoiceLine choices={_choices}></ChoiceLine>
     )
   }
-
 }

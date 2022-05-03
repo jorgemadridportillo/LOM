@@ -5,10 +5,7 @@ import {EventEmitter} from '../EventEmitter.js';
 import {Controller} from '../Controller';
 
 export function Terminal() {
-
   const [lines, setLines] = useState([{ text: "Welcome human, the test has begun, let the machine gods decide your destiny, good luck..." , type:"text"}]);
-
-
   
   EventEmitter.subscribe('questionAnswered', (event) => {
     EventEmitter.unsubscribe('questionAnswered');
