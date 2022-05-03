@@ -13,6 +13,15 @@ const Controller = {
         Controller.currentQuestion++;
         const question = Model.questions[Controller.currentQuestion];
         return question;
+    },
+    getCorrectAnswerByIndex: (questionIndex) => {
+        return Model.getCorrectAnswerByIndex(questionIndex);
+    },
+    addAnswer: (value) => {
+        Model.addAnswer(value);
+    },
+    getBonus:(questionIndex) => {
+        return Model.questions[questionIndex].bonus;
     }
 }
 

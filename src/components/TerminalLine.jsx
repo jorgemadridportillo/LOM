@@ -40,7 +40,7 @@ export function TerminalLine({ line, isCurrentLine, type }) {
         scrollChoice(-1);
       });
 
-      if(!_choices && _text === '') {
+      if(type === 'input') {
         answerInput.current.focus();
       }
       EventEmitter.subscribe('enterKey', (event) => {
@@ -48,7 +48,7 @@ export function TerminalLine({ line, isCurrentLine, type }) {
         EventEmitter.unsubscribe('leftKey');
         EventEmitter.unsubscribe('enterKey');
 
-        if(!_choices && _text === '') {
+        if(type === 'input') {
           setText(answerInput.current.value);
           line.text = answerInput.current.value;
           line.type = "text";
@@ -60,7 +60,13 @@ export function TerminalLine({ line, isCurrentLine, type }) {
 
   }, []);
 
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
+    if(!isNaN(line.answer)) {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+        return;
+      }
+    }
     const l = e.target.value.length + 2;
     setWidth(l*7 + "px");
   }
@@ -71,7 +77,7 @@ export function TerminalLine({ line, isCurrentLine, type }) {
     )
   } else if(type === 'input') {
     return (
-      <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyPress(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
+      <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyDown(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
     )
   } else if(type === 'choices') {
     return (
