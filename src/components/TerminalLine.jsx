@@ -62,9 +62,11 @@ export function TerminalLine({ line, isCurrentLine, type }) {
 
   const handleKeyDown = (e) => {
     if(!isNaN(line.answer)) {
-      if (!/[0-9]/.test(e.key)) {
-        e.preventDefault();
-        return;
+      if(e.key !== "Backspace") {
+        if (!/[0-9\.]|[\b]/.test(e.key)) {
+          e.preventDefault();
+          return;
+        }
       }
     }
     const l = e.target.value.length + 2;

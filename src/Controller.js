@@ -22,6 +22,11 @@ const Controller = {
     },
     getBonus:(questionIndex) => {
         return Model.questions[questionIndex].bonus;
+    },
+    getNumberOfCorrectAnswers: () => {
+        const answers = Model.getAnswers();
+        const correctAnswers = answers.filter((answer) => {return answer.correct === true});
+        return correctAnswers.length;
     }
 }
 

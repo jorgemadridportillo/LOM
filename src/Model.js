@@ -19,6 +19,9 @@ const Model = {
         return Model.getCorrectAnswer(question);
     },
     userAnswers: [],
+    getAnswers: () => {
+        return Model.userAnswers;
+    },
     addAnswer: function(answer) {
         Model.userAnswers.push(answer);
     }   
