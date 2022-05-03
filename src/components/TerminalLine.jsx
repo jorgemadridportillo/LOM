@@ -2,7 +2,7 @@ import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
 
-export function TerminalLine({ line, isCurrentLine }) {
+export function TerminalLine({ line, isCurrentLine, type }) {
   const { text, choices } =  line;
   const [_choices, setChoices] = useState(choices);
   const [_text, setText] = useState(text);
@@ -31,7 +31,7 @@ export function TerminalLine({ line, isCurrentLine }) {
         }
     }
 
-    if(isCurrentLine) {
+    if(isCurrentLine || type === 'prompt') {
       EventEmitter.subscribe('rightKey', (event) => {
         scrollChoice(1);
       });
@@ -46,12 +46,14 @@ export function TerminalLine({ line, isCurrentLine }) {
       EventEmitter.subscribe('enterKey', (event) => {
         EventEmitter.unsubscribe('rightKey');
         EventEmitter.unsubscribe('leftKey');
-  
         EventEmitter.unsubscribe('enterKey');
+
         if(!_choices && _text === '') {
           setText(answerInput.current.value);
           line.text = answerInput.current.value;
+          line.type = "text";
         }
+        
         EventEmitter.dispatch('questionAnswered');
       });
     }
@@ -63,15 +65,15 @@ export function TerminalLine({ line, isCurrentLine }) {
     setWidth(l*7 + "px");
   }
   
-  if(!_choices && _text !== '') {
+  if(type === 'text' || type === 'prompt') {
     return (
       <li>{'>'} {_text} <span className="blink">_</span></li>
     )
-  } else if(!_choices && _text === '') {
+  } else if(type === 'input') {
     return (
       <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyPress(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
     )
-  } else {
+  } else if(type === 'choices') {
     return (
       <li>{'>'} 
       {_choices.map((choice, index) => {
