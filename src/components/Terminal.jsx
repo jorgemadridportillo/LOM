@@ -1,11 +1,12 @@
 import React from 'react';
 import {TerminalLine} from './TerminalLine';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
 import {Controller} from '../Controller';
 
 export function Terminal() {
   const [lines, setLines] = useState([{ text: "Welcome human, the test has begun, let the machine gods decide your destiny, good luck..." , type:"text"}]);
+  const notInitialRender = useRef(false)
   
   EventEmitter.subscribe('questionAnswered', (event) => {
     EventEmitter.unsubscribe('questionAnswered');
@@ -21,10 +22,11 @@ export function Terminal() {
       const lastQuestionLine = lines.find((line) => {  return line.questionIndex === lastQuestionIndex;});
       answerLine.type = "text";
       var correctAnswer = Controller.getCorrectAnswerByIndex(lastQuestionLine.questionIndex);
-      var answerToSave = {text: answerText, correct: false};
+      var answerToSave = {correct: false};
 
       if(lastQuestionLine && lastQuestionLine.type === "text") {
         var answerText = lastQuestionLine.text;
+        answerToSave.text = answerText;
         if(answerText === correctAnswer) {
           answerLine.text = Controller.getBonus(lastQuestionLine.questionIndex);
           answerToSave.correct = true;

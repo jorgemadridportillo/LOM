@@ -17,22 +17,24 @@ export function TerminalLine({ line, isCurrentLine, type }) {
             return ((n % m) + m) % m;
         }
         if(_choices) {
-            let newChoices = [..._choices];
-            var activeChoiceIndex = 0;
-            var found = newChoices.some((choice, index) => { activeChoiceIndex = index; return choice.active === true });
-
-            if (!found) {
-                return false;
-            } else {
-                const numberOfChoices = _choices.length;
-                newChoices[activeChoiceIndex].active = false;
-                newChoices[mod(activeChoiceIndex + num, numberOfChoices)].active = true;
-            }
-            setChoices(newChoices);
+            setChoices((previousChoices) => {
+              let newChoices = [...previousChoices];
+              var activeChoiceIndex = 0;
+              var found = previousChoices.some((choice, index) => { activeChoiceIndex = index; return choice.active === true });
+  
+              if (!found) {
+                  return false;
+              } else {
+                  const numberOfChoices = _choices.length;
+                  newChoices[activeChoiceIndex].active = false;
+                  newChoices[mod(activeChoiceIndex + num, numberOfChoices)].active = true;
+              }
+              return newChoices;
+            }); 
         }
     }
 
-    if(isCurrentLine || type === 'prompt') {
+    if(isCurrentLine) {
       EventEmitter.subscribe('rightKey', (event) => {
         scrollChoice(1);
       });
@@ -57,6 +59,11 @@ export function TerminalLine({ line, isCurrentLine, type }) {
         
         EventEmitter.dispatch('questionAnswered');
       });
+    } else if (type === 'prompt') {
+      EventEmitter.subscribe('enterKey', (event) => {
+        EventEmitter.unsubscribe('enterKey');
+        EventEmitter.dispatch('questionAnswered');
+      });
     }
 
   }, []);
@@ -64,7 +71,7 @@ export function TerminalLine({ line, isCurrentLine, type }) {
   const handleKeyDown = (e) => {
     if(!isNaN(line.answer)) {
       if(e.key !== "Backspace") {
-        if (!/[0-9\.]|[\b]/.test(e.key)) {
+        if (!/[0-9.]|[\b]/.test(e.key)) {
           e.preventDefault();
           return;
         }

@@ -90,9 +90,9 @@ test('test number input question', async () => {
   userEvent.keyboard('{Enter}');
   userEvent.keyboard('{Enter}'); // Answer first choice question
   userEvent.keyboard('Test'); // Enter input
-  userEvent.keyboard('{Enter}'); // Answer second choice
+  userEvent.keyboard('{Enter}'); // Answer second question
   userEvent.keyboard('Test2'); // Enter input
-  userEvent.keyboard('{Enter}'); // Answer second choice
+  userEvent.keyboard('{Enter}'); // Answer third question
   userEvent.keyboard('asdfasdf'); // Enter input
   try {
     screen.getByText(/asdfasdf/);
@@ -100,6 +100,59 @@ test('test number input question', async () => {
     expect(err).toBeDefined();
   }
   userEvent.keyboard('12345'); // Enter input
-  userEvent.keyboard('{Enter}'); // Answer second choice
+  userEvent.keyboard('{Enter}'); // Answer fourth question
   expect(screen.getByText(/12345/)).toBeInTheDocument();
+});
+
+
+test('test the questionaire can be completed wrongly', async () => {
+  render(<App />);
+  await waitFor(() => {
+    screen.getByText(/ENTER/);
+  }, {timeout: 50});
+
+  userEvent.keyboard('{Enter}');
+  userEvent.keyboard('{Enter}'); // Answer first choice question
+  userEvent.keyboard('{Enter}'); // Answer second question
+  userEvent.keyboard('{Enter}'); // Answer third question
+  userEvent.keyboard('{Enter}'); // Answer fourth question
+  userEvent.keyboard('{Enter}'); // Answer fifth question
+  userEvent.keyboard('{Enter}'); // Answer sixth question
+  userEvent.keyboard('{Enter}'); // Answer seventh question
+  userEvent.keyboard('{Enter}'); // Answer eighth question
+  userEvent.keyboard('{Enter}'); // Answer ninth question
+  userEvent.keyboard('{Enter}'); // Answer tenth question
+  expect(screen.getByText(/your weak human intelligence/)).toBeInTheDocument();
+  expect(screen.getByText(/You got 1 questions correct/)).toBeInTheDocument();
+});
+
+test('test the questionaire can be completed correctly', async () => {
+  render(<App />);
+  await waitFor(() => {
+    screen.getByText(/ENTER/);
+  }, {timeout: 50});
+
+  userEvent.keyboard('{Enter}');
+  userEvent.keyboard('{arrowright}');
+  userEvent.keyboard('{Enter}'); // Answer first choice question
+  userEvent.keyboard('Magellan'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer second question
+  userEvent.keyboard('Elvis'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer third question
+  userEvent.keyboard('110'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer fourth question
+  userEvent.keyboard('{Enter}'); // Answer fifth question
+  userEvent.keyboard('21'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer sixth question
+  userEvent.keyboard('Terminator'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer seventh question
+  userEvent.keyboard('2.718'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer eighth question
+  userEvent.keyboard('{arrowright}');
+  userEvent.keyboard('{arrowright}');
+  userEvent.keyboard('{Enter}'); // Answer ninth question
+  userEvent.keyboard('6'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer tenth question
+  expect(screen.getByText(/humanity might be saved for this time/)).toBeInTheDocument();
+  expect(screen.getByText(/You got 10 questions correct/)).toBeInTheDocument();
 });
