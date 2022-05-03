@@ -11,6 +11,9 @@ const EventEmitter = {
   unsubscribe: function(event) {
     if (!this._events[event]) return;
     delete this._events[event];
+  },
+  reset: function() {
+    this._events = {};
   }
 } 
 
