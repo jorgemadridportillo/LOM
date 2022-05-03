@@ -33,7 +33,7 @@ export function TerminalLine({ line, isCurrentLine, type }) {
             }); 
         }
     }
-
+    // Is the last question line on the terminal
     if(isCurrentLine) {
       EventEmitter.subscribe('rightKey', (event) => {
         scrollChoice(1);
@@ -77,8 +77,8 @@ export function TerminalLine({ line, isCurrentLine, type }) {
         }
       }
     }
-    const l = e.target.value.length + 2;
-    setWidth(l*7 + "px");
+    const l = e.target.value.length + 3;
+    setWidth(l*8 + "px");
   }
   
   if(type === 'text' || type === 'prompt') {
