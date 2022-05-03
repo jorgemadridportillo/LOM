@@ -1,12 +1,14 @@
 import React from 'react';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
 
 export function TerminalLine({ line, isCurrentLine }) {
   const { text, choices } =  line;
   const [_choices, setChoices] = useState(choices);
+  const [_text, setText] = useState(text);
   const [width, setWidth] = useState("10px");
   const [input, setInput] = useState('');
+  const answerInput = useRef(null);
 
   useEffect(() => {
       const scrollChoice = (num) => {
@@ -37,14 +39,23 @@ export function TerminalLine({ line, isCurrentLine }) {
       EventEmitter.subscribe('leftKey', (event) => {
         scrollChoice(-1);
       });
+
+      if(!_choices && _text === '') {
+        answerInput.current.focus();
+      }
+      EventEmitter.subscribe('enterKey', (event) => {
+        EventEmitter.unsubscribe('rightKey');
+        EventEmitter.unsubscribe('leftKey');
+  
+        EventEmitter.unsubscribe('enterKey');
+        if(!_choices && _text === '') {
+          setText(answerInput.current.value);
+          line.text = answerInput.current.value;
+        }
+        EventEmitter.dispatch('questionAnswered');
+      });
     }
 
-    EventEmitter.subscribe('enterKey', (event) => {
-      EventEmitter.unsubscribe('rightKey');
-      EventEmitter.unsubscribe('leftKey');
-
-      
-    });
   }, []);
 
   const handleKeyPress = (e) => {
@@ -52,13 +63,13 @@ export function TerminalLine({ line, isCurrentLine }) {
     setWidth(l*7 + "px");
   }
   
-  if(!_choices && text !== '') {
+  if(!_choices && _text !== '') {
     return (
-      <li>{'>'} {text} <span className="blink">_</span></li>
+      <li>{'>'} {_text} <span className="blink">_</span></li>
     )
-  } else if(!_choices && text === '') {
+  } else if(!_choices && _text === '') {
     return (
-      <li>{'>'} <input value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyPress(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
+      <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyPress(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
     )
   } else {
     return (
