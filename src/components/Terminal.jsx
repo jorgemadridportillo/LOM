@@ -1,15 +1,12 @@
 import React from 'react';
 import {TerminalLine} from './TerminalLine';
-import {useState, useEffect, useRef} from 'react';
-import {EventEmitter} from '../EventEmitter.js';
+import {useState, useEffect} from 'react';
 import {Controller} from '../Controller';
 
 export function Terminal() {
   const [lines, setLines] = useState([{ text: "Welcome human, the test has begun, let the machine gods decide your destiny, good luck..." , type:"text"}]);
-  const notInitialRender = useRef(false)
   
-  EventEmitter.subscribe('questionAnswered', (event) => {
-    EventEmitter.unsubscribe('questionAnswered');
+  function onQuestionAnswered() {
     if(!Controller.isReady) { return; }
 
     const lastQuestionIndex = Controller.getCurrentQuestionIndex();
@@ -76,14 +73,12 @@ export function Terminal() {
     setLines((prevLines) => {
       return [...prevLines, answerLine, nextLine, inputLine];
     });
-
-  });
+  }
 
   // Prompt intro
   useEffect(() => {
     setTimeout(() => {
       var userLine = { text: "Press ENTER to continue", type: "prompt" };
-      EventEmitter.unsubscribe('questionAnswered');
       setLines((prevLines) => {
         return [...prevLines, userLine];
       });
@@ -94,7 +89,7 @@ export function Terminal() {
   return (
     <ul className="lines">
         {lines.map((line, index) => (
-            <TerminalLine key={index} line={line} type={line.type} isCurrentLine={ line.questionIndex === Controller.getCurrentQuestionIndex()}/>
+            <TerminalLine key={index} line={line} type={line.type} isCurrentLine={ line.questionIndex === Controller.getCurrentQuestionIndex()} onQuestionAnswered={onQuestionAnswered}/>
         ))}        
     </ul>
   );

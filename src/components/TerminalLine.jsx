@@ -3,7 +3,7 @@ import {useState, useEffect, useRef} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
 import { ChoiceLine } from './ChoiceLine.jsx';
 
-export function TerminalLine({ line, isCurrentLine, type }) {
+export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) {
   const { text, choices } =  line;
   const [_choices, setChoices] = useState(choices);
   const [_text, setText] = useState(text);
@@ -58,18 +58,21 @@ export function TerminalLine({ line, isCurrentLine, type }) {
             EventEmitter.unsubscribe('leftKey');
             EventEmitter.unsubscribe('enterKey');
             EventEmitter.dispatch('questionAnswered');
+            onQuestionAnswered();
           }
         }else {
           EventEmitter.unsubscribe('rightKey');
           EventEmitter.unsubscribe('leftKey');
           EventEmitter.unsubscribe('enterKey');
           EventEmitter.dispatch('questionAnswered');
+          onQuestionAnswered();
         }
         
       });
     } else if (type === 'prompt') {
       EventEmitter.subscribe('enterKey', (event) => {
         EventEmitter.unsubscribe('enterKey');
+        onQuestionAnswered();
         EventEmitter.dispatch('questionAnswered');
       });
     }
