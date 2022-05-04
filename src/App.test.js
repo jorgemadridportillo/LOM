@@ -70,15 +70,14 @@ test('test input question', async () => {
   }, {timeout: 50});
 
   userEvent.keyboard('{Enter}');
-  userEvent.keyboard('First'); // Enter input
-  userEvent.keyboard('{Enter}'); // Answer first choice question
+  userEvent.keyboard('{Enter}');// Answer first choice question
   const lineItems = document.querySelectorAll('.lines li');
   expect(lineItems.length).toEqual(7);
-  userEvent.keyboard('Test'); // Enter input
-  userEvent.keyboard('{Enter}'); // Answer second question
+  userEvent.keyboard('First'); // Enter input
+  userEvent.keyboard('{Enter}'); // Answer first choice question
   const lineItems2 = document.querySelectorAll('.lines li');
   expect(lineItems2.length).toEqual(10);
-  expect(screen.getByText(/Test/)).toBeInTheDocument();
+  expect(screen.getByText(/First/)).toBeInTheDocument();
 });
 
 test('test input question cannot be empty', async () => {
@@ -88,8 +87,7 @@ test('test input question cannot be empty', async () => {
   }, {timeout: 50});
 
   userEvent.keyboard('{Enter}');
-  userEvent.keyboard('First'); // Enter input
-  userEvent.keyboard('{Enter}'); // Answer first choice question
+  userEvent.keyboard('{Enter}');// Answer first choice question
   userEvent.keyboard('{Enter}'); // Answer second question
   const lineItems2 = document.querySelectorAll('.lines li');
   expect(lineItems2.length).toEqual(7);
@@ -102,7 +100,6 @@ test('test input question empty and then with a value', async () => {
   }, {timeout: 50});
 
   userEvent.keyboard('{Enter}');
-  userEvent.keyboard('First'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer first choice question
   userEvent.keyboard('{Enter}'); // Answer second question
   const lineItems = document.querySelectorAll('.lines li');
@@ -120,7 +117,6 @@ test('test number input question', async () => {
   }, {timeout: 50});
 
   userEvent.keyboard('{Enter}');
-  userEvent.keyboard('First'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer first choice question
   userEvent.keyboard('Test'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer second question

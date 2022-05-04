@@ -11,6 +11,7 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
   const [width, setWidth] = useState("10px");
   const [input, setInput] = useState('');
   const answerInput = useRef(null);
+  const [focusInterval, setFocusInterval] = useState();
 
   useEffect(() => {
       const scrollChoice = (num) => {
@@ -46,6 +47,11 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
 
       if(type === 'input') {
         answerInput.current.focus();
+        setFocusInterval(setInterval(() => {
+          if(answerInput.current) {
+            answerInput.current.focus();
+          }
+        }, 30));
       }
       EventEmitter.subscribe('enterKey', (event) => {
         if(type === 'input') {
@@ -58,6 +64,10 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
             EventEmitter.unsubscribe('rightKey');
             EventEmitter.unsubscribe('leftKey');
             EventEmitter.unsubscribe('enterKey');
+            setInterval((previousInterval) => {
+              clearInterval(previousInterval);
+              return undefined;
+            });
             onQuestionAnswered();
           }
         }else {
