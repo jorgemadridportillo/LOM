@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {useState, useEffect, useRef} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
 import { ChoiceLine } from './ChoiceLine.jsx';
@@ -74,7 +74,7 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
         onQuestionAnswered();
       });
     }
-
+  // eslint-disable-next-line
   }, []);
 
   const handleKeyDown = (e) => {
@@ -96,7 +96,6 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
         <li>{'>'} {_text} <span className="blink">_</span></li>
         <ProgressBar></ProgressBar>
       </div>
-
     )
   } else if(type === 'input') {
     return (
