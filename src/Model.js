@@ -22,6 +22,12 @@ const Model = {
     getAnswers: () => {
         return Model.userAnswers;
     },
+    getNumberOfQuestionsAnswered: () => {
+        return Model.userAnswers.length;
+    },
+    getNumberOfQuestions: () => {
+        return Model.questions.length;
+    },
     addAnswer: function(answer) {
         Model.userAnswers.push(answer);
     }   

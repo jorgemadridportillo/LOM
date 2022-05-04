@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {useState, useEffect, useRef} from 'react';
 import {EventEmitter} from '../EventEmitter.js';
 import { ChoiceLine } from './ChoiceLine.jsx';
+import { ProgressBar } from './ProgressBar.jsx';
 
 export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) {
   const { text, choices } =  line;
@@ -91,7 +92,11 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
   
   if(type === 'text' || type === 'prompt') {
     return (
-      <li>{'>'} {_text} <span className="blink">_</span></li>
+      <div>
+        <li>{'>'} {_text} <span className="blink">_</span></li>
+        <ProgressBar></ProgressBar>
+      </div>
+
     )
   } else if(type === 'input') {
     return (

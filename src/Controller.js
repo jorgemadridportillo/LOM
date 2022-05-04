@@ -6,8 +6,11 @@ const Controller = {
     model: Model,
     isReady: false,
     setReady: () => Controller.isReady = true,
-    getProgress: function() {
-        return Controller.currentQuestion / Model.questions.length * 100;
+    getNumberOfQuestionsAnswered: () => {
+        return Model.userAnswers.length;
+    },
+    getNumberOfQuestions: () => {
+        return Model.questions.length;
     },
     getNextQuestion: () => {
         Controller.currentQuestion++;

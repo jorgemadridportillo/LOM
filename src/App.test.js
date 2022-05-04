@@ -219,4 +219,23 @@ test('test the questionaire can be completed correctly', async () => {
   expect(screen.getByText(/You got 10 questions correct/)).toBeInTheDocument();
 });
 
+test('test the progress bar increases correctly', async () => {
+  render(<App />);
+  await waitFor(() => {
+    screen.getByText(/ENTER/);
+  }, {timeout: 50});
 
+  userEvent.keyboard('{Enter}');
+  try {
+    screen.getAllByText(/##/);
+  } catch(err){
+    expect(err).toBeDefined();
+  }
+  userEvent.keyboard('{arrowright}');
+  userEvent.keyboard('{Enter}'); // Answer first choice question
+  const progress = screen.getAllByText(/##/);
+  expect(progress.length).toEqual(2);
+  progress.forEach(element => {
+    expect(element).toBeInTheDocument();
+  });
+});
