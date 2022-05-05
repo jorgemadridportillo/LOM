@@ -14,7 +14,8 @@ export function Terminal() {
     const currentQuestionIndex = Controller.getCurrentQuestionIndex();
 
     // Show answers
-    var answerLine={}
+    var answerLine={};
+    const incorrectText = "Incorrect!, the correct answer was: ";
     if(lastQuestionIndex >= 0) {
       const lastQuestionLine = lines.find((line) => {  return line.questionIndex === lastQuestionIndex;});
       answerLine.type = "text";
@@ -28,7 +29,7 @@ export function Terminal() {
           answerLine.text = Controller.getBonus(lastQuestionLine.questionIndex);
           answerToSave.correct = true;
         } else {
-          answerLine.text = "Incorrect!, the correct answer was: " + correctAnswer;
+          answerLine.text = incorrectText  + correctAnswer;
         }
       } else if (lastQuestionLine && lastQuestionLine.type === "choices") {
         var choices = lastQuestionLine.choices;
@@ -39,7 +40,7 @@ export function Terminal() {
             answerLine.text = Controller.getBonus(lastQuestionLine.questionIndex);
             answerToSave.correct = true;
           } else {
-            answerLine.text = "Incorrect!, the correct answer was: " + choices[correctAnswer].text;
+            answerLine.text = incorrectText + choices[correctAnswer].text;
           }
         }
       }
