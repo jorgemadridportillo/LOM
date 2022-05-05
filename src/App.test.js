@@ -1,31 +1,39 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import App from './App';
 import {Controller} from './Controller';
 import {EventEmitter} from './EventEmitter';
 import userEvent from '@testing-library/user-event'
 
 Controller.promptTimeout = 1;
+
 beforeEach(() => {
   Controller.reset();
+  Controller.promptTimeout = 1;
   EventEmitter.reset();
 });
 
 test('renders the terminal ul', () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   const ul = document.getElementsByClassName('lines');
   expect(ul).toBeDefined();
   expect(ul.length).toEqual(1);
 });
 
 test('renders the terminal intro', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     expect(screen.getByText(/ENTER/)).toBeInTheDocument();
   }, {timeout: 50});
 });
 
 test('renders the first question', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -37,7 +45,9 @@ test('renders the first question', async () => {
 });
 
 test('navigate through a choice', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -64,24 +74,28 @@ test('navigate through a choice', async () => {
 });
 
 test('test input question', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
 
   userEvent.keyboard('{Enter}');
   userEvent.keyboard('{Enter}');// Answer first choice question
-  const lineItems = document.querySelectorAll('.lines li');
+  const lineItems = document.querySelectorAll('.lines div li');
   expect(lineItems.length).toEqual(7);
   userEvent.keyboard('First'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer first choice question
-  const lineItems2 = document.querySelectorAll('.lines li');
+  const lineItems2 = document.querySelectorAll('.lines div li');
   expect(lineItems2.length).toEqual(10);
   expect(screen.getByText(/First/)).toBeInTheDocument();
 });
 
 test('test input question cannot be empty', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -94,7 +108,9 @@ test('test input question cannot be empty', async () => {
 });
 
 test('test input question empty and then with a value', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -111,7 +127,9 @@ test('test input question empty and then with a value', async () => {
 });
 
 test('test input question is case insensitive', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -125,7 +143,9 @@ test('test input question is case insensitive', async () => {
 });
 
 test('test number input question', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -148,7 +168,9 @@ test('test number input question', async () => {
 });
 
 test('test the answer is correct', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -160,7 +182,9 @@ test('test the answer is correct', async () => {
 });
 
 test('test answer is incorrect', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -171,7 +195,9 @@ test('test answer is incorrect', async () => {
 });
 
 test('test the questionaire can be completed wrongly', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -199,7 +225,9 @@ test('test the questionaire can be completed wrongly', async () => {
 });
 
 test('test the questionaire can be completed correctly', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
@@ -230,7 +258,9 @@ test('test the questionaire can be completed correctly', async () => {
 });
 
 test('test the progress bar increases correctly', async () => {
-  render(<App />);
+  act(() => {
+    render(<App />);
+  });
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});

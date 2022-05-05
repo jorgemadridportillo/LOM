@@ -24,11 +24,11 @@ input:focus {outline:none!important;}
   line-height: 0px;
 }
 
-.lines li .blink {
+.lines .blink {
   display: none;
 }
 
-.lines li:last-child .blink {
+.lines div:last-child .blink {
   display: inline;
 }
 

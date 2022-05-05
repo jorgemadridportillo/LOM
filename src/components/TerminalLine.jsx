@@ -47,11 +47,7 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
 
       if(type === 'input') {
         answerInput.current.focus();
-        setFocusInterval(setInterval(() => {
-          if(answerInput.current) {
-            answerInput.current.focus();
-          }
-        }, 30));
+        setFocusInterval();
       }
       EventEmitter.subscribe('enterKey', (event) => {
         if(type === 'input') {
@@ -109,7 +105,9 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
     )
   } else if(type === 'input') {
     return (
-      <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyDown(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
+      <div>
+        <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyDown(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
+      </div>
     )
   } else if(type === 'choices') {
     return (
