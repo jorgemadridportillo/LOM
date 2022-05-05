@@ -4,7 +4,7 @@ import {EventEmitter} from '../EventEmitter.js';
 import { ChoiceLine } from './ChoiceLine.jsx';
 import { ProgressBar } from './ProgressBar.jsx';
 
-export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) {
+export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered, index }) {
   const { text, choices } =  line;
   const [_choices, setChoices] = useState(choices);
   const [_text, setText] = useState(text);
@@ -14,7 +14,8 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
   const [focusInterval, setFocusInterval] = useState();
 
   useEffect(() => {
-      const scrollChoice = (num) => {
+    var intervalId;
+    const scrollChoice = (num) => {
         const mod = (n, m) => {
             return ((n % m) + m) % m;
         }
@@ -47,7 +48,11 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
 
       if(type === 'input') {
         answerInput.current.focus();
-        setFocusInterval();
+        intervalId = setInterval(() => {
+          if(answerInput.current) {
+            answerInput.current.focus();
+          }
+        }, 300)
       }
       EventEmitter.subscribe('enterKey', (event) => {
         if(type === 'input') {
@@ -60,10 +65,9 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
             EventEmitter.unsubscribe('rightKey');
             EventEmitter.unsubscribe('leftKey');
             EventEmitter.unsubscribe('enterKey');
-            setInterval((previousInterval) => {
-              clearInterval(previousInterval);
-              return undefined;
-            });
+            if(intervalId) {
+              clearInterval(intervalId);
+            }
             onQuestionAnswered();
           }
         }else {
@@ -106,7 +110,7 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) 
   } else if(type === 'input') {
     return (
       <div>
-        <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyDown(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
+        <li>{'>'} <input data-testid={index} ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyDown(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
       </div>
     )
   } else if(type === 'choices') {

@@ -127,17 +127,16 @@ test('test input question empty and then with a value', async () => {
 });
 
 test('test input question is case insensitive', async () => {
-  act(() => {
-    render(<App />);
-  });
+  render(<App />);
   await waitFor(() => {
     screen.getByText(/ENTER/);
   }, {timeout: 50});
-
+  
   userEvent.keyboard('{Enter}');
   userEvent.keyboard('{Enter}'); // Answer first choice question
   userEvent.keyboard('mAGELLAN'); // Enter input
   userEvent.keyboard('{Enter}'); // Answer second question
+
   const lineItems2 = document.querySelectorAll('.lines li');
   expect(lineItems2.length).toEqual(10);
 });
