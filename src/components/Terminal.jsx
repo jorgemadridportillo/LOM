@@ -90,7 +90,7 @@ export function Terminal() {
   return (
     <ul className="lines">
         {lines.map((line, index) => (
-            <TerminalLine key={index} line={line} type={line.type} isCurrentLine={ line.questionIndex === Controller.getCurrentQuestionIndex()} onQuestionAnswered={onQuestionAnswered} index={index}/>
+            <TerminalLine key={index} line={line} type={line.type} isCurrentLine={ line.questionIndex === Controller.getCurrentQuestionIndex()} onQuestionAnswered={onQuestionAnswered}/>
         ))}        
     </ul>
   );

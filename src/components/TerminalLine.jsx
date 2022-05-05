@@ -4,14 +4,13 @@ import {EventEmitter} from '../EventEmitter.js';
 import { ChoiceLine } from './ChoiceLine.jsx';
 import { ProgressBar } from './ProgressBar.jsx';
 
-export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered, index }) {
+export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered }) {
   const { text, choices } =  line;
   const [_choices, setChoices] = useState(choices);
   const [_text, setText] = useState(text);
   const [width, setWidth] = useState("10px");
   const [input, setInput] = useState('');
   const answerInput = useRef(null);
-  const [focusInterval, setFocusInterval] = useState();
 
   useEffect(() => {
     var intervalId;
@@ -110,7 +109,7 @@ export function TerminalLine({ line, isCurrentLine, type, onQuestionAnswered, in
   } else if(type === 'input') {
     return (
       <div>
-        <li>{'>'} <input data-testid={index} ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyDown(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
+        <li>{'>'} <input ref={answerInput} value={input} onInput={e => setInput(e.target.value)} disabled={isCurrentLine === false} onKeyDown={(e) => handleKeyDown(e)} style={{width: width}}type="text"></input> <span className="blink">_</span></li>
       </div>
     )
   } else if(type === 'choices') {
