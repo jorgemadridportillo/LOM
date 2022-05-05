@@ -24,7 +24,7 @@ export function Terminal() {
       if(lastQuestionLine && lastQuestionLine.type === "text") {
         var answerText = lastQuestionLine.text;
         answerToSave.text = answerText;
-        if(answerText === correctAnswer) {
+        if(answerText.localeCompare(correctAnswer, undefined, { sensitivity: 'accent' }) === 0) {
           answerLine.text = Controller.getBonus(lastQuestionLine.questionIndex);
           answerToSave.correct = true;
         } else {
