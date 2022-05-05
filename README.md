@@ -13,8 +13,8 @@ Answers:
 9. League of Legends
 10. 6
 
-To pass the tests: npm test
-To run locally: npm start
-To deploy on your own git pages change the homepage variable in the package json file and run: npm run deploy
+- To pass the tests: npm test
+- To run locally: npm start
+- To deploy on your own git pages change the homepage variable in the package json file and run: npm run deploy
 
 Have fun!
